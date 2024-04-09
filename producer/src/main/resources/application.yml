@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: consumer
+  cloud:
+    function:
+      definition: producer
+    stream:
+      kafka:
+        bindings:
+          producer-out-0:
+            producer:
+              configuration:
+                value.serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bindings:
+        producer-out-0:
+          destination: test
+          producer:
+            useNativeEncoding: true
