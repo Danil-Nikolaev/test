@@ -1,0 +1,24 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: consumer
+ 
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+  cloud:
+    function:
+      definition: consumer
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: test
+          consumer:
+            use-native-decoding: true
+
