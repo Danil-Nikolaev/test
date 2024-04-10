@@ -1,4 +1,10 @@
+variable:
+  bindingName: producer-out-0
+
 spring:
+  profiles:
+    active:
+    - dev
   application:
     name: consumer
   kafka:

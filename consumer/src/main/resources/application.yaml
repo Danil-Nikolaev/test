@@ -1,9 +1,11 @@
 server:
   port: 8083
 spring:
+  profiles:
+    active:
+    - dev
   application:
     name: consumer
- 
   kafka:
     consumer:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
