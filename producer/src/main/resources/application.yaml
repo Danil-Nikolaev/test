@@ -1,6 +1,7 @@
 variable:
   bindingName: producer-out-0
-
+server:
+  port: 8081
 spring:
   profiles:
     active:
