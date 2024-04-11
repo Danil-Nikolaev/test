@@ -29,7 +29,7 @@ public class MockService {
     private final Logger LOGGER = LoggerFactory.getLogger(MockService.class); 
 
     public Integer send(Product product) {
-        ResponseEntity<Integer> response;
+        ResponseEntity<Integer> response = null;
         String url = baseUrl + "/test";
         try{
             response = restTemplate.postForEntity(url, new HttpEntity<>(product, httpHeaders),Integer.class);
@@ -41,6 +41,7 @@ public class MockService {
             if (accessToken != null) {
                 httpHeaders.add("auth", accessToken);    
                 response = restTemplate.postForEntity(url, new HttpEntity<>(product, httpHeaders),Integer.class);
+                return response.getBody();
             }
         } catch(HttpServerErrorException ex) {
             LOGGER.error("HTTP server error occurred in MockSevice: " + ex.getStatusCode() + " - " + ex.getStatusText());
