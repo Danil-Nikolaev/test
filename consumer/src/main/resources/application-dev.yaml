@@ -8,4 +8,7 @@ variable:
         realm-name: test-realm
         client-id: mock-client
         client-secret: kjFCjCCJzARVJQjbYT6vfMupisVwiFRK
+        username: consumer-service
+        password: password
+        access-url: http://localhost:8080/realms/${variable.keycloak.realm-name}/protocol/openid-connect/token
     

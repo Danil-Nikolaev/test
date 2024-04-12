@@ -1,8 +1,26 @@
 package com.example.stream;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AccessToken {
 
+    @JsonProperty("access_token")
     private String accessToken;
+
+    @JsonProperty("refresh_token")
+    private String refreshToken;
+
+    @JsonProperty("expires_in")
+    private Integer expiresIn;
+
+    public AccessToken() {
+    }
+
+    public AccessToken(String accessToken, String refreshToken, Integer expiresIn) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.expiresIn = expiresIn;
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -12,11 +30,20 @@ public class AccessToken {
         this.accessToken = accessToken;
     }
 
-    public AccessToken() {
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public AccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public Integer getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(Integer expiresIn) {
+        this.expiresIn = expiresIn;
     }
 
 }
