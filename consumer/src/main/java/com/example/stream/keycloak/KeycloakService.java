@@ -51,4 +51,8 @@ public class KeycloakService {
         return true;
     }
 
+    public void deleteAccessToken() {
+        accessToken = null;
+    }
+
 }

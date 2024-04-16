@@ -1,9 +1,9 @@
 variable:
-    kafka:
-        topic-name-consumer: test
-        topic-name-producer: test-user
     profile: dev
     binding-name: producer-out-0
+    retry:
+        delay: 800
+        max-attempts: 3
     mock:
         base-url: http://localhost:8084
         post-endpoint: ${variable.mock.base-url}/test
@@ -14,7 +14,7 @@ variable:
         client-secret: kjFCjCCJzARVJQjbYT6vfMupisVwiFRK
         username: consumer-service
         password: password
-        access-url: http://localhost:8080/realms/${variable.keycloak.realm-name}/protocol/openid-connect/token
+        access-url: ${variable.keycloak.base-url}/realms/${variable.keycloak.realm-name}/protocol/openid-connect/token
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/consumerDB
@@ -23,8 +23,6 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: create 
 
   kafka:
     producer:
@@ -42,11 +40,11 @@ spring:
     stream:
       bindings:
         consumer-in-0:
-          destination: ${variable.kafka.topic-name-consumer}
+          destination: test
           consumer:
             use-native-decoding: true
         producer-out-0:
-          destination: ${variable.kafka.topic-name-producer}
+          destination: test-user
           producer:
             use-native-encoding: true
 
