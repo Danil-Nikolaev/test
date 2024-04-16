@@ -1,4 +1,4 @@
-package com.example.stream;
+package com.example.stream.keycloak;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -31,11 +31,13 @@ public class KeycloakService {
 
     public String getAccessToken() {
         if (checkAccesToken()) return accessToken.getAccessToken();
+       
         LOGGER.info("update access token");
         ResponseEntity<AccessToken> response = restTemplate.postForEntity(accessUrl, httpEntity, AccessToken.class);
         timeGetAccessToken = Instant.now();
         accessToken = response.getBody();
-        LOGGER.info("access token - {}", response.getBody().getAccessToken());
+        LOGGER.info("get access token"); 
+        
         return response.getBody().getAccessToken();
     }
 

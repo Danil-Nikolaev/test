@@ -1,8 +1,12 @@
 variable:
+    kafka:
+        topic-name-consumer: test
+        topic-name-producer: test-user
     profile: dev
     binding-name: producer-out-0
     mock:
         base-url: http://localhost:8084
+        post-endpoint: ${variable.mock.base-url}/test
     keycloak:
         base-url: http://localhost:8080
         realm-name: test-realm
@@ -11,4 +15,39 @@ variable:
         username: consumer-service
         password: password
         access-url: http://localhost:8080/realms/${variable.keycloak.realm-name}/protocol/openid-connect/token
-    
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/consumerDB
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create 
+
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+  cloud:
+    function:
+      definition: consumer
+    stream:
+      bindings:
+        consumer-in-0:
+          destination: ${variable.kafka.topic-name-consumer}
+          consumer:
+            use-native-decoding: true
+        producer-out-0:
+          destination: ${variable.kafka.topic-name-producer}
+          producer:
+            use-native-encoding: true
+
+   

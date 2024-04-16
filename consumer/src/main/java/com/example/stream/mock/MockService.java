@@ -1,4 +1,4 @@
-package com.example.stream;
+package com.example.stream.mock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.stream.Product;
+import com.example.stream.keycloak.KeycloakService;
+
 @Component
 public class MockService {
 
-    @Value("${variable.mock.base-url}")
-    private String baseUrl;
+    @Value("${variable.mock.post-endpoint}")
+    private String postEndpoint;
 
     @Autowired
     private KeycloakService keycloakService;
@@ -28,8 +31,7 @@ public class MockService {
     public Integer send(Product product) {
         httpHeaders.clear();
         httpHeaders.add("auth", getAccessToken());
-        String url = baseUrl + "/test";
-        ResponseEntity<Integer> response = restTemplate.postForEntity(url, new HttpEntity<>(product, httpHeaders), Integer.class);
+        ResponseEntity<Integer> response = restTemplate.postForEntity(postEndpoint, new HttpEntity<>(product, httpHeaders), Integer.class);
 
         LOGGER.info("response from mock service - {}", response.getBody());
         return response.getBody();

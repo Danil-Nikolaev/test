@@ -1,4 +1,4 @@
-package com.example.stream;
+package com.example.stream.keycloak;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

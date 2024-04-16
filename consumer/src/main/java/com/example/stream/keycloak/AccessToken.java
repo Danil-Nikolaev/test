@@ -1,4 +1,4 @@
-package com.example.stream;
+package com.example.stream.keycloak;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

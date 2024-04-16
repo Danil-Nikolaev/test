@@ -6,27 +6,3 @@ spring:
     - dev
   application:
     name: consumer
-  kafka:
-    producer:
-      value-serializer: org.apache.kafka.common.serialization.IntegerSerializer 
-    consumer:
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: '*'
-  cloud:
-    function:
-      definition: consumer
-    stream:
-      bindings:
-        consumer-in-0:
-          destination: test
-          consumer:
-            use-native-decoding: true
-        producer-out-0:
-          destination: test-2
-          producer:
-            use-native-encoding: true
-

@@ -34,8 +34,8 @@ public class MockApplication {
 	public ResponseEntity<Integer> getMethodName(@RequestHeader(value = "auth", required = false) String auth,
 	@RequestBody Product product) {
 		LOGGER.info("get product - {}",product.getName());
-		if (auth == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-		if (countRequest > 7) countRequest = 0;
+		if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		if (countRequest > 8) countRequest = 0;
 		if (countRequest++ > 5) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		Integer num = random.nextInt();
 		LOGGER.info("send num - {}", num);
