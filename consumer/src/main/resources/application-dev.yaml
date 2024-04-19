@@ -55,5 +55,3 @@ spring:
           destination: test-user
           producer:
             use-native-encoding: true
-
-   
