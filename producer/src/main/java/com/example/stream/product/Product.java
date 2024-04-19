@@ -1,4 +1,4 @@
-package com.example.stream;
+package com.example.stream.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

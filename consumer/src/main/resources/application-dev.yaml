@@ -3,12 +3,12 @@ variable:
     page-size: 10
   kafka:
     producer:
-      binding-name: producer-out-0
+      binding-name: consumer-in-0
 server:
     port: 8081
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/producerDB
+    url: jdbc:postgresql://localhost:5432/consumerDB
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
@@ -16,8 +16,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 
     consumer:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -26,9 +24,9 @@ spring:
             trusted:
               packages: '*'
   cloud:
+    function:
+      definition: consumer
     stream:
       bindings:
-        producer-out-0:
-          destination: test-product
-          producer:
-            use-native-encoding: true
+        consumer-in-0:
+            destination: test-product
