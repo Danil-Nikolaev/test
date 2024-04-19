@@ -1,0 +1,28 @@
+server:
+    port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/producerDB
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+  cloud:
+    stream:
+      bindings:
+        producer-out-0:
+          destination: test-product
+          producer:
+            use-native-encoding: true
