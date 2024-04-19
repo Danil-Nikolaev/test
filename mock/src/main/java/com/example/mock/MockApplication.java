@@ -35,8 +35,17 @@ public class MockApplication {
 	@RequestBody Product product) {
 		LOGGER.info("get product - {}",product.getName());
 		if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		if (countRequest > 8) countRequest = 0;
+		
+		if (countRequest > 1) countRequest = 0;
+		
+		if (countRequest > 7) {
+			countRequest++;
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+
 		if (countRequest++ > 5) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		
+		
 		Integer num = random.nextInt();
 		LOGGER.info("send num - {}", num);
 		return ResponseEntity.ok(num);

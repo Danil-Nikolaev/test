@@ -1,14 +1,14 @@
 package com.example.stream.kafka;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import com.example.stream.user.User;
@@ -25,21 +25,23 @@ public class ProducerService {
     @Value("${variable.binding-name}")
     private String bindingName;
 
+    @Value("${variable.db.page-size}")
+    private int pageSize;
+
     private final Logger LOGGER = LoggerFactory.getLogger(ProducerService.class);
 
     public void producer(Integer num) {
-        int pageSize = 10;
+        Long lastProcessedId = 0L;
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by("id"));
 
-        Stream.iterate(0, pageNum -> pageNum + 1)
-                .map(pageNum -> PageRequest.of(pageNum, pageSize))
-                .map(userRepository::findAll)
-                .takeWhile(page->!page.isEmpty())
-                .forEach(page -> {
-                    List<User> users = page.getContent();
-                    users.forEach(user -> {
-                        streamBridge.send(bindingName, user);
-                    });
-                });
+        Slice<User> users;
+        do {
+            users = userRepository.findByIdGreaterThan(lastProcessedId, pageable);
+            for (User user : users) {
+                streamBridge.send(bindingName, user);
+                lastProcessedId = user.getId();
+            }
+        } while (!users.isEmpty());
 
         LOGGER.info("send to kafka all users");
     }

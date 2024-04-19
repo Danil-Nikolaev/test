@@ -1,6 +1,8 @@
 variable:
     profile: dev
     binding-name: producer-out-0
+    db:
+      page-size: 10
     retry:
         delay: 800
         max-attempts: 3
@@ -15,6 +17,12 @@ variable:
         username: consumer-service
         password: password
         access-url: ${variable.keycloak.base-url}/realms/${variable.keycloak.realm-name}/protocol/openid-connect/token
+# Настройка уровня логирования SQL-запросов Hibernate
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/consumerDB
@@ -23,7 +31,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+    # show-sql: true
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 

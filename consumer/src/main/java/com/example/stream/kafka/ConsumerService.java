@@ -12,7 +12,6 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
 import com.example.stream.Product;
-import com.example.stream.keycloak.KeycloakService;
 import com.example.stream.mock.MockService;
 
 @Service
@@ -22,8 +21,6 @@ public class ConsumerService {
 	private ProducerService producerService;
 	@Autowired
 	private MockService mockService;
-	@Autowired
-	private KeycloakService keycloakService;
 
 	private final Logger LOGGER = LoggerFactory.getLogger(ConsumerService.class);
 
@@ -42,7 +39,6 @@ public class ConsumerService {
 			throw ex;
 		} catch (Unauthorized ex) {
 			LOGGER.error("You are unauthorized: {}", ex.getCause());
-			keycloakService.deleteAccessToken();
 			throw ex;
 		} catch (HttpServerErrorException ex) {
 			LOGGER.error("HTTP server error occurred: " + ex.getStatusCode() + " - " + ex.getStatusText());
