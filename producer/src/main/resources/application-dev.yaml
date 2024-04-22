@@ -4,8 +4,8 @@ variable:
   kafka:
     producer:
       binding-name: producer-out-0
-server:
-    port: 8081
+  scheduling:
+    fixed-rate: 10000
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/producerDB
@@ -14,6 +14,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   kafka:
     producer:
