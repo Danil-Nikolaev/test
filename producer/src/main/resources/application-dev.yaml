@@ -1,4 +1,6 @@
 variable:
+  multithreading:
+    num-threads: 2
   db:
     page-size: 10
   kafka:

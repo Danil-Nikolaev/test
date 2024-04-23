@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.CannotCreateTransactionException;
 
 import com.example.stream.product.ProductService;
 
@@ -19,6 +20,12 @@ public class SchedulingTask {
     @Scheduled(fixedRateString = "${variable.scheduling.fixed-rate}")
     public void unloadDBScheduled() {
         LOGGER.info("scheduled start");
-        productService.unloadDB();
+        try {
+            productService.unloadDB();
+        } catch (CannotCreateTransactionException ex) {
+            LOGGER.error("couldn't connect to db: {}", ex.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error("An error occured: {}", ex.getMessage());
+        }
     }
 }
