@@ -1,6 +1,9 @@
 variable:
   db:
     page-size: 10
+  retry:
+    delay: 1000
+    max-attmpts: 3
   kafka:
     producer:
       binding-name: consumer-in-0

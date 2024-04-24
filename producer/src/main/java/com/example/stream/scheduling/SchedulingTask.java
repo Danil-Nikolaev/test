@@ -22,7 +22,7 @@ public class SchedulingTask {
     private final Logger LOGGER = LoggerFactory.getLogger(SchedulingTask.class);
     
     @Scheduled(fixedRateString = "${variable.scheduling.fixed-rate}")
-    @Retryable(retryFor = {DataAccessResourceFailureException.class, RuntimeException.class})
+    @Retryable(retryFor = {DataAccessResourceFailureException.class})
     public void unloadDBScheduled() {
         LOGGER.info("scheduled start");
         try {
