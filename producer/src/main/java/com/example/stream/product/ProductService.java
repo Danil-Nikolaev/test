@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 
@@ -30,7 +32,7 @@ public class ProductService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
-    public void unloadDB() {
+    public void unloadDB() throws InterruptedException, ExecutionException {
 
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
         Long minId = 0L; 
@@ -41,12 +43,16 @@ public class ProductService {
             maxId = productRepository.findMaxId();
             partitionSize = (maxId - minId) / numThreads;
 
+            List<Future<?>> futures = new ArrayList<>();
+
             for (int i = 0; i < numThreads; i++) {
                 Long startId = minId + i * partitionSize;
                 Long endId = (i == numThreads - 1) ? maxId : startId + partitionSize - 1;
 
-                executor.submit(new ProductPartionProcessor(startId, endId, pageSize, productRepository, streamBridge, bindingName));
+                Future<?> future = executor.submit(new ProductPartionProcessor(startId, endId, pageSize, productRepository, streamBridge, bindingName));
+                futures.add(future);
             }
+            for (Future<?> future : futures) future.get();
             minId = maxId + 1;
         } while (minId <= productRepository.findMaxId());
 
