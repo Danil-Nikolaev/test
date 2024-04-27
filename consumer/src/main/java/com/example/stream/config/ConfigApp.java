@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.example.stream.product.Product;
 import com.example.stream.product.ProductConsumer;
+import com.example.stream.product.ProductEntity;
 
 @Configuration
 public class ConfigApp {
@@ -19,7 +19,7 @@ public class ConfigApp {
     private final Logger LOGGER = LoggerFactory.getLogger(ConfigApp.class);
   
     @Bean
-	Consumer<List<Product>> consumer() {
+	Consumer<List<ProductEntity>> consumer() {
         LOGGER.info("getConsumer");
 		return productConsumer::getFromTopicProduct;
 	}

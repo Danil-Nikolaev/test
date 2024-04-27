@@ -13,35 +13,35 @@ import org.springframework.transaction.CannotCreateTransactionException;
 
 @Component
 public class ProductConsumer {
-    
+
     @Autowired
-    private ProductEntityService productEntityService;
+    private ProductEntityRepository productEntityRepository;
 
     private final Logger LOGGER = LoggerFactory.getLogger(ProductConsumer.class);
-   
+
+    public void getFromTopicProduct(List<ProductEntity> products) {
+        getProduct(products);
+    }
+
     @Retryable(
-        retryFor = {CannotCreateTransactionException.class}, 
-        maxAttemptsExpression = "${variable.retry.max-attempts}",
+        retryFor = { CannotCreateTransactionException.class }, 
+        maxAttemptsExpression = "${variable.retry.max-attempts}", 
         backoff = @Backoff(delayExpression = "${variable.retry.delay}")
-    )
-    public void getFromTopicProduct(List<Product> products) {
-        products.forEach(product -> {
-            LOGGER.info("get product --- {}", product.getId());
-            try {
-                productEntityService.saveProduct(product);
-                LOGGER.info("save products");
-            } catch(CannotCreateTransactionException ex) {
-                LOGGER.error("couldn't connect to DB: {}", ex.getMessage());
-                throw ex;
-            } catch (Exception ex) {
-                LOGGER.error("An error occured");
-                ex.printStackTrace();
-            }
-        });      
+        )
+    public void getProduct(List<ProductEntity> products) {
+        try {
+            productEntityRepository.saveAll(products);
+            LOGGER.info("save message with products");
+        } catch(CannotCreateTransactionException ex) {
+            LOGGER.error("coldn't connect to DB: {}", ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            LOGGER.error("An error occuraed: {}", ex.getMessage());
+        }
     }
 
     @Recover
-    public void recoverDB(CannotCreateTransactionException ex, List<Product> products) {
+    public void recoverDB(CannotCreateTransactionException ex, List<ProductEntity> products) {
         LOGGER.error("connection to db are failed");
     }
 }

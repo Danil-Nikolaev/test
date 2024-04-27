@@ -1,6 +1,9 @@
 variable:
+  retry:
+    delay: 1000
+    max-attempts: 3
   multithreading:
-    num-threads: 4
+    num-threads: 2
   db:
     page-size: 10
   kafka:
@@ -17,10 +20,6 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 

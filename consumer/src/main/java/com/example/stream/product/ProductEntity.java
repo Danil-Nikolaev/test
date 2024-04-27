@@ -1,8 +1,11 @@
 package com.example.stream.product;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(allowGetters = true, value = {"createdAt", "updatedAt"})
 public class ProductEntity {
     
     @Id
@@ -26,8 +30,12 @@ public class ProductEntity {
 
     private String name;
 
-    @Column(name="created_time", updatable = false)
+    @Column(name="created_at", updatable = false)
     @CreationTimestamp
-    private Timestamp createdTime;
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 }

@@ -13,7 +13,6 @@ public class ProductEntityService {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setId(product.getId());
         productEntity.setName(product.getName());
-        // productEntity.setCreatedTime(LocalDateTime.now());
         productEntityRepository.save(productEntity);
     }
 }
