@@ -7,18 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Component;
 
-import com.example.stream.model.Product;
-
 @Component
-public class TestKafkaProducer {
+public class DepositDetailsProducer {
     
     @Autowired
     private StreamBridge streamBridge;
 
-    @Value("${variable.kafka.producer.binding-name-0}")
+    @Value("${variable.kafka.producer.binding-name-1}")
     private String bindingName;
 
-    public void send(List<Product> products) {
-        streamBridge.send(bindingName, products);
+    public void send() {
+       // TODO LATER 
     }
+
 }

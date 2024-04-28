@@ -1,0 +1,15 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="3" author="danil.nikolaev">
+        <addForeignKeyConstraint constraintName="fk_client_bis_details"
+                                 baseTableName="client_bis_details" baseColumnNames="id_event"
+                                 referencedTableName="deposit_details" referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="client_bis_details" constraintName="fk_client_bis_details"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
+

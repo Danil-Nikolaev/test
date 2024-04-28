@@ -8,7 +8,8 @@ variable:
     page-size: 10
   kafka:
     producer:
-      binding-name: producer-out-0
+      binding-name-0: producer-out-0
+      binding-name-1: producer-out-1
   scheduling:
     fixed-rate: 10000
 spring:
@@ -33,6 +34,10 @@ spring:
   cloud:
     stream:
       bindings:
+        producer-out-1:
+          destination: deposit-details
+          producer:
+            use-native-encoding: true
         producer-out-0:
           destination: test-product
           producer:
